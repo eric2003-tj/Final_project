@@ -105,4 +105,13 @@ class Square {
       }
       return;
    }
+   method int getx(){
+     return x;
+   }
+   method int gety(){
+     return y;
+   }
+   method int get_size(){
+    return size;
+   }
 }
