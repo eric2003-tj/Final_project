@@ -71,12 +71,13 @@ class SquareGame {
     do Sys.wait(5);  // delays the next movement
     return;
   }
-
    /** Runs the game: handles the user's inputs and moves the square accordingly */
    method void run() {
       var char key;  // the key currently pressed by the user
       var boolean exit;
       var int enedir;
+      var int seed;
+      var int seed2;
       let exit = false;
       while (~exit) {
          let enedir = Random.randRange(4);
@@ -94,14 +95,18 @@ class SquareGame {
          while (~(key = 0)) {
             let key = Keyboard.keyPressed();
             do moveSquare();
+            let seed = Random.randRange(100);
+            let seed2 = Random.randRange(10);
+            do moveEnemy(enedir);
+            if(SquareGame.inrange(square.getx(),square.gety(),square.get_size(),enemy.getx(),enemy.gety(),enemy.get_width(),enemy.get_length())){
+               do enemy.erase();
+               do enemy.dispose();
+               do Sys.wait(1);
+               let enemy = Enemy.new(seed*2+seed2,seed*1+seed2,20,10);
+            }
          }
-         do moveEnemy(enedir);
-         if(SquareGame.inrange(square.getx(),square.gety(),square.get_size(),enemy.getx(),enemy.gety(),enemy.get_width(),enemy.get_length())){
-            do enemy.erase();
-            do enemy.dispose();
-            let enemy = Enemy.new(491,235,20,10);
-         }
-         do Sys.wait(5);
+
+
      } // while
      return;
    }
