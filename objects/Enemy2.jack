@@ -10,7 +10,7 @@ class Enemy2 {
    field int size; // length of this square, in pixels
 
    /** Constructs a new square with a given location and size. */
-   constructor Square new(int Ax, int Ay, int Asize) {
+   constructor Enemy2 new(int Ax, int Ay, int Asize) {
       let x = Ax;
       let y = Ay;
       let size = Asize;
@@ -23,7 +23,18 @@ class Enemy2 {
       do Memory.deAlloc(this);
       return;
    }
-
+   method int getx(){
+     return x;
+   }
+   method int gety(){
+    return y;
+   }
+   method int get_width(){
+    return size;
+   }
+   method int get_length(){
+   return size;
+   }
    /** Draws the square on the screen. */
    method void draw() {
       do Screen.setColor(true);
