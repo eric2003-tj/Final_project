@@ -13,7 +13,7 @@ class SquareGame {
       let square = Square.new(20, 50, 30);
       let enemy = Enemy.new(100,50,5,5);
       let enemy2 = Enemy.new(200,100,5,5);
-      let friend = Enemy.new(220,130,6,4);
+      let friend = Enemy.new(290,130,6,4);
       let direction = 0;  // initial state is no movement
       let score = 0;
       return this;
@@ -49,7 +49,7 @@ class SquareGame {
       if (direction = 2) { do square.moveDown(); }
       if (direction = 3) { do square.moveLeft(); }
       if (direction = 4) { do square.moveRight(); }
-      do Sys.wait(5);  // delays the next movement
+      do Sys.wait(7);  // delays the next movement
       return;
    }
   method void moveEnemy(int direction){
@@ -149,10 +149,10 @@ class SquareGame {
             }
             if(~alive3 & SquareGame.inrange(square.getx(),square.gety(),square.get_size(),friend.getx(),friend.gety(),friend.get_width(),friend.get_length())){
                do friend.erase();
+               do friend.dispose();
                do enemy2.draw();
                do square.draw();
                do enemy.draw();
-               do friend.dispose();
                let score = score+1;
                if(score>2){
                  let exit = true;
@@ -171,13 +171,13 @@ class SquareGame {
          if(alive2){
             let seed = Random.randRange(100);
             let seed2 = Random.randRange(10);
-            let enemy2 = Enemy.new(seed*2+seed2,seed*1+seed2,5,5);
+            let enemy2 = Enemy.new(seed*4+seed2,seed*1+seed2,5,5);
             let alive2 = false;
          }
          if(alive3){
            let seed = Random.randRange(100);
            let seed2 = Random.randRange(10);
-           let enemy2 = Enemy.new(seed*2+seed2,seed*1+seed2,6,4);
+           let friend = Enemy.new(seed*3-seed2+20,seed*1-seed2+15,10,4);
            let alive3 = false;
          }
 
