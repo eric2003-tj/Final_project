@@ -1,32 +1,21 @@
-// This file is part of www.nand2tetris.org
-// and the book "The Elements of Computing Systems"
-// by Nisan and Schocken, MIT Press.
-// File name: projects/09/Square/SquareGame.jack
-
-/**
- * Implements the Square Dance game.
- * This simple game allows the user to move a black square around
- * the screen, and change the square's size during the movement.
- * When the game starts, a square of 30 by 30 pixels is shown at the
- * top-left corner of the screen. The user controls the square as follows.
- * The 4 arrow keys are used to move the square up, down, left, and right.
- * The 'z' and 'x' keys are used, respectively, to decrement and increment
- * the square's size. The 'q' key is used to quit the game.
- */
-
 class SquareGame {
    field Square square; // the square of this game
    field Enemy enemy;
+   field Enemy enemy2;
+   field Enemy friend;
    field int direction; // the square's current direction:
                         // 0=none, 1=up, 2=down, 3=left, 4=right
-
+   field int score;
    /** Constructs a new Square Game. */
    constructor SquareGame new() {
       // Creates a 30 by 30 pixels square and positions it at the top-left
       // of the screen.
-      let square = Square.new(0, 0, 30);
-      let enemy = Enemy.new(100,50,20,30);
+      let square = Square.new(20, 50, 30);
+      let enemy = Enemy.new(100,50,5,5);
+      let enemy2 = Enemy.new(200,100,5,5);
+      let friend = Enemy.new(220,130,6,4);
       let direction = 0;  // initial state is no movement
+      let score = 0;
       return this;
    }
    function boolean inrange(int xsquare,int ysquare,int squaresize,int xenemy,int yenemy,int enemy_xlength,int enemy_ylength){
@@ -71,14 +60,41 @@ class SquareGame {
     do Sys.wait(5);  // delays the next movement
     return;
   }
+  method void moveSecondEnemy(int direction){
+    if (direction = 1) { do enemy2.moveUp(); }
+    if (direction = 2) { do enemy2.moveDown(); }
+    if (direction = 3) { do enemy2.moveLeft(); }
+    if (direction = 4) { do enemy2.moveRight(); }
+    do Sys.wait(5);  // delays the next movement
+    return;
+  }
+  method void moveFriend(int direction){
+    if (direction = 1) { do friend.moveUp(); }
+    if (direction = 2) { do friend.moveDown(); }
+    if (direction = 3) { do friend.moveLeft(); }
+    if (direction = 4) { do friend.moveRight(); }
+    do Sys.wait(5);  // delays the next movement
+    return;
+  }
    /** Runs the game: handles the user's inputs and moves the square accordingly */
    method void run() {
       var char key;  // the key currently pressed by the user
       var boolean exit;
+      var boolean alive1;
+      var boolean alive2;
+      var boolean alive3;//friend
       var int enedir;
       var int seed;
       var int seed2;
+      var int stepOfNextenemy;
+      var int stepfr;
       let exit = false;
+      let alive1 = false;
+      let alive2 = false;
+      let alive3 = false;
+      do Output.moveCursor(0,0);
+      do Output.printString("Score: ");
+      do Output.printInt(score);
       while (~exit) {
          let enedir = Random.randRange(4);
          // waits for a key to be pressed
@@ -95,17 +111,75 @@ class SquareGame {
          while (~(key = 0)) {
             let key = Keyboard.keyPressed();
             do moveSquare();
-            let seed = Random.randRange(100);
-            let seed2 = Random.randRange(10);
             do moveEnemy(enedir);
-            if(SquareGame.inrange(square.getx(),square.gety(),square.get_size(),enemy.getx(),enemy.gety(),enemy.get_width(),enemy.get_length())){
+            do enemy2.draw();
+            do square.draw();
+            do enemy.draw();
+            let stepOfNextenemy = ((enedir*3)/4);
+            let stepfr = ((enedir*3+1)/4);
+            do moveSecondEnemy(stepOfNextenemy);
+            do moveFriend(stepfr);
+            if(~alive1 & SquareGame.inrange(square.getx(),square.gety(),square.get_size(),enemy.getx(),enemy.gety(),enemy.get_width(),enemy.get_length())){
                do enemy.erase();
+               do enemy2.draw();
+               do square.draw();
+               do friend.draw();
                do enemy.dispose();
-               do Sys.wait(1);
-               let enemy = Enemy.new(seed*2+seed2,seed*1+seed2,20,10);
+               let score = score-1;
+               if(score<0){
+                  let exit = true;
+               }
+               do Output.moveCursor(0,7);
+               do Output.printInt(score);
+               let alive1 = true;
+            }
+            if(~alive2 & SquareGame.inrange(square.getx(),square.gety(),square.get_size(),enemy2.getx(),enemy2.gety(),enemy2.get_width(),enemy2.get_length())){
+               do enemy2.erase();
+               do enemy.draw();
+               do square.draw();
+               do friend.draw();
+               do enemy2.dispose();
+               let score = score-1;
+               if(score<0){
+                  let exit = true;
+               }
+               do Output.moveCursor(0,7);
+               do Output.printInt(score);
+               let alive2 = true;
+            }
+            if(~alive3 & SquareGame.inrange(square.getx(),square.gety(),square.get_size(),friend.getx(),friend.gety(),friend.get_width(),friend.get_length())){
+               do friend.erase();
+               do enemy2.draw();
+               do square.draw();
+               do enemy.draw();
+               do friend.dispose();
+               let score = score+1;
+               if(score>2){
+                 let exit = true;
+               }
+               do Output.moveCursor(0,7);
+               do Output.printInt(score);
+               let alive3 = true;
             }
          }
-
+         if(alive1){
+            let seed = Random.randRange(100);
+            let seed2 = Random.randRange(10);
+            let enemy = Enemy.new(seed*2+seed2,seed*1+seed2,5,5);
+            let alive1 = false;
+         }
+         if(alive2){
+            let seed = Random.randRange(100);
+            let seed2 = Random.randRange(10);
+            let enemy2 = Enemy.new(seed*2+seed2,seed*1+seed2,5,5);
+            let alive2 = false;
+         }
+         if(alive3){
+           let seed = Random.randRange(100);
+           let seed2 = Random.randRange(10);
+           let enemy2 = Enemy.new(seed*2+seed2,seed*1+seed2,6,4);
+           let alive3 = false;
+         }
 
      } // while
      return;
