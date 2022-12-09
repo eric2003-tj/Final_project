@@ -57,7 +57,7 @@ class Enemy{
 
    /** Moves the square down by 2 pixels. */
    method void moveDown() {
-      if ((y + length) < 254) {
+      if ((y + length) < 254 & (y+length) > 30) {
          do Screen.setColor(false);
          do Screen.drawRectangle(x, y, x + width, y + 1);
          let y = y + 2;
