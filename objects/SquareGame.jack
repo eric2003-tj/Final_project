@@ -3,6 +3,7 @@ class SquareGame {
    field Enemy enemy;
    field Enemy enemy2;
    field Enemy friend;
+   field King king;
    field int direction; // the square's current direction:
                         // 0=none, 1=up, 2=down, 3=left, 4=right
    field int score;
@@ -11,27 +12,36 @@ class SquareGame {
       // Creates a 30 by 30 pixels square and positions it at the top-left
       // of the screen.
       let square = Square.new(20, 50, 30);
-      let enemy = Enemy.new(100,50,5,5);
-      let enemy2 = Enemy.new(200,100,5,5);
+      let enemy = Enemy.new(100,50,20,20);
+      let enemy2 = Enemy.new(200,100,8,8);
       let friend = Enemy.new(290,130,10,4);
       let direction = 0;  // initial state is no movement
       let score = 0;
       return this;
    }
+   function int abs(int a,int b){
+       var int diff;
+       let diff = a-b;
+       if(diff < 0){
+          let diff = b-a;
+       }
+       return diff;
+   }
    function boolean inrange(int xsquare,int ysquare,int squaresize,int xenemy,int yenemy,int enemy_xlength,int enemy_ylength){
          var boolean in;
-         let in = true;
-         if( ~(((2*xsquare+squaresize) - (2*xenemy+enemy_xlength)) < (squaresize + enemy_xlength)) ){
-              let in=false;
-         }
-         if( ~(((2*xenemy+enemy_xlength) - (2*xsquare+squaresize)) < (squaresize + enemy_xlength)) ){
-		      let in=false;
-         }
-         if( ~(((2*ysquare+squaresize) - (2*yenemy+enemy_ylength)) < (squaresize + enemy_ylength)) ){
-              let in=false;
-         }
-         if( ~(((2*yenemy+enemy_ylength) - (2*ysquare+squaresize)) < (squaresize + enemy_ylength)) ){
-             let in=false;
+         var int maxX1;
+         var int maxY1;
+         var int maxX2;
+         var int maxY2;
+         let in = false;
+         let maxX1 = (xsquare+squaresize);
+         let maxY1 = (ysquare+squaresize);
+         let maxX2 = (xenemy+enemy_xlength);
+         let maxY2 = (yenemy+enemy_ylength);
+         if((maxX1>xenemy)&(maxX2>xsquare)){
+            if((maxY1>yenemy)&(maxY2>ysquare)){
+                let in = true;
+            }
          }
          return in;
      }
@@ -83,23 +93,32 @@ class SquareGame {
       var boolean alive1;
       var boolean alive2;
       var boolean alive3;//friend
+      var boolean final;
       var int enedir;
       var int seed;
       var int seed2;
       var int stepOfNextenemy;
       var int stepfr;
+      var int lifeOfking;
       let exit = false;
       let alive1 = false;
       let alive2 = false;
       let alive3 = false;
+      let final = false;
+      let lifeOfking = 3;
       do Output.moveCursor(0,0);
       do Output.printString("Score: ");
       do Output.printInt(score);
+      do Output.moveCursor(0,10);
+      do Output.printString("Life of king: ");
+      do Output.printInt(lifeOfking);
+      //do Output.printString("You need to attack the heart of the enemy.");
       while (~exit) {
          let enedir = Random.randRange(4);
          // waits for a key to be pressed
          while (key = 0) {
             let key = Keyboard.keyPressed();
+            do Sys.wait(5);
             do moveSquare();
          }
          if (key = 81)  { let exit = true; }     // q key
@@ -110,15 +129,16 @@ class SquareGame {
          // waits for the key to be released
          while (~(key = 0)) {
             let key = Keyboard.keyPressed();
+            let stepOfNextenemy = ((enedir*3)/4);
+            let stepfr = ((enedir*3+1)/4);
             do moveSquare();
             do moveEnemy(enedir);
+            do moveSecondEnemy(stepOfNextenemy);
+            do moveFriend(stepfr);
             do enemy2.draw();
             do square.draw();
             do enemy.draw();
-            let stepOfNextenemy = ((enedir*3)/4);
-            let stepfr = ((enedir*3+1)/4);
-            do moveSecondEnemy(stepOfNextenemy);
-            do moveFriend(stepfr);
+            do friend.draw();
             if(~alive1 & SquareGame.inrange(square.getx(),square.gety(),square.get_size(),enemy.getx(),enemy.gety(),enemy.get_width(),enemy.get_length())){
                do enemy.erase();
                do enemy2.draw();
@@ -155,7 +175,7 @@ class SquareGame {
                do enemy.draw();
                let score = score+1;
                if(score>2){
-                 let exit = true;
+                 let final = true;
                }
                do Output.moveCursor(0,7);
                do Output.printInt(score);
@@ -165,23 +185,40 @@ class SquareGame {
          if(alive1){
             let seed = Random.randRange(100);
             let seed2 = Random.randRange(10);
-            let enemy = Enemy.new(seed*2+seed2,seed*1+seed2,5,5);
+            let enemy = Enemy.new(seed*2+seed2,seed*1+seed2+30,4,4);
             let alive1 = false;
          }
          if(alive2){
             let seed = Random.randRange(100);
             let seed2 = Random.randRange(10);
-            let enemy2 = Enemy.new(seed*4+seed2,seed*1+seed2,5,5);
+            let enemy2 = Enemy.new(seed*4+seed2,seed*1+seed2+30,8,8);
             let alive2 = false;
          }
          if(alive3){
            let seed = Random.randRange(100);
            let seed2 = Random.randRange(10);
-           let friend = Enemy.new(seed*3-seed2+20,seed*1-seed2+15,10,4);
+           let friend = Enemy.new(seed*3+250,seed*1-seed2+90,10,4);
            let alive3 = false;
          }
-
+         if(final){
+            let king = King.new(100,100,40);
+            if(lifeOfking>0){
+               if(SquareGame.inrange(square.getx(),square.gety(),square.get_size(),king.getx(),king.gety(),king.get_size(),king.get_size())){
+                    let lifeOfking = lifeOfking-1;
+                    let score = score-1;
+                    do Output.moveCursor(0,7);
+                    do Output.printInt(score);
+                    do Output.moveCursor(0,10);
+                    do Output.printString("Life of king: ");
+                    do Output.printInt(lifeOfking);
+               }
+            }
+            if(lifeOfking=0 & score>0){
+               let exit = true;
+            }
+         }
      } // while
+
      return;
    }
 }
