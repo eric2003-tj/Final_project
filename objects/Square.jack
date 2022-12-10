@@ -1,218 +1,111 @@
-class SquareGame {
-   field Square square; // the square of this game
-   field Enemy enemy;
-   field Enemy enemy2;
-   field Enemy friend;
-   field King king;
-   field int direction; // the square's current direction:
-                        // 0=none, 1=up, 2=down, 3=left, 4=right
-   field int score;
-   /** Constructs a new Square Game. */
-   constructor SquareGame new() {
-      // Creates a 30 by 30 pixels square and positions it at the top-left
-      // of the screen.
-      let square = Square.new(20, 50, 30);
-      let enemy = Enemy.new(100,50,20,20);
-      let enemy2 = Enemy.new(200,100,8,8);
-      let friend = Enemy.new(290,130,10,4);
-      let direction = 0;  // initial state is no movement
-      let score = 0;
+class Square {
+
+   field int x, y; // screen location of the square's top-left corner
+   field int size; // length of this square, in pixels
+
+   /** Constructs a new square with a given location and size. */
+   constructor Square new(int Ax, int Ay, int Asize) {
+      let x = Ax;
+      let y = Ay;
+      let size = Asize;
+      do draw();
       return this;
    }
-   function int abs(int a,int b){
-       var int diff;
-       let diff = a-b;
-       if(diff < 0){
-          let diff = b-a;
-       }
-       return diff;
-   }
-   function boolean inrange(int xsquare,int ysquare,int squaresize,int xenemy,int yenemy,int enemy_xlength,int enemy_ylength){
-         var boolean in;
-         let in = true;
-         if( ~(((2*xsquare+squaresize) - (2*xenemy+enemy_xlength)) < (squaresize + enemy_xlength)) ){
-              let in=false;
-         }
-         if( ~(((2*xenemy+enemy_xlength) - (2*xsquare+squaresize)) < (squaresize + enemy_xlength)) ){
-		      let in=false;
-         }
-         if( ~(((2*ysquare+squaresize) - (2*yenemy+enemy_ylength)) < (squaresize + enemy_ylength)) ){
-              let in=false;
-         }
-         if( ~(((2*yenemy+enemy_ylength) - (2*ysquare+squaresize)) < (squaresize + enemy_ylength)) ){
-             let in=false;
-         }
-         return in;
-     }
-   /** Disposes this game. */
+
+   /** Disposes this square. */
    method void dispose() {
-      do square.dispose();
-      do enemy.dispose();
       do Memory.deAlloc(this);
       return;
    }
 
-   /** Moves the square in the current direction. */
-   method void moveSquare() {
-      if (direction = 1) { do square.moveUp(); }
-      if (direction = 2) { do square.moveDown(); }
-      if (direction = 3) { do square.moveLeft(); }
-      if (direction = 4) { do square.moveRight(); }
-      do Sys.wait(7);  // delays the next movement
+   /** Draws the square on the screen. */
+   method void draw() {
+      do Screen.setColor(true);
+      do Screen.drawRectangle(x, y, x + size, y + size);
       return;
    }
-  method void moveEnemy(int direction){
-    if (direction = 1) { do enemy.moveUp(); }
-    if (direction = 2) { do enemy.moveDown(); }
-    if (direction = 3) { do enemy.moveLeft(); }
-    if (direction = 4) { do enemy.moveRight(); }
-    do Sys.wait(5);  // delays the next movement
-    return;
-  }
-  method void moveSecondEnemy(int direction){
-    if (direction = 1) { do enemy2.moveUp(); }
-    if (direction = 2) { do enemy2.moveDown(); }
-    if (direction = 3) { do enemy2.moveLeft(); }
-    if (direction = 4) { do enemy2.moveRight(); }
-    do Sys.wait(5);  // delays the next movement
-    return;
-  }
-  method void moveFriend(int direction){
-    if (direction = 1) { do friend.moveUp(); }
-    if (direction = 2) { do friend.moveDown(); }
-    if (direction = 3) { do friend.moveLeft(); }
-    if (direction = 4) { do friend.moveRight(); }
-    do Sys.wait(5);  // delays the next movement
-    return;
-  }
-   /** Runs the game: handles the user's inputs and moves the square accordingly */
-   method void run() {
-      var char key;  // the key currently pressed by the user
-      var boolean exit;
-      var boolean alive1;
-      var boolean alive2;
-      var boolean alive3;//friend
-      var boolean final;
-      var int enedir;
-      var int seed;
-      var int seed2;
-      var int stepOfNextenemy;
-      var int stepfr;
-      var int lifeOfking;
-      let exit = false;
-      let alive1 = false;
-      let alive2 = false;
-      let alive3 = false;
-      let final = false;
-      let lifeOfking = 3;
-      do Output.moveCursor(0,0);
-      do Output.printString("Score: ");
-      do Output.printInt(score);
-      do Output.moveCursor(0,10);
-      do Output.printString("You need to attack the heart of the enemy.");
-      while (~exit) {
-         let enedir = Random.randRange(4);
-         // waits for a key to be pressed
-         while (key = 0) {
-            let key = Keyboard.keyPressed();
-            do Sys.wait(5);
-            do moveSquare();
-         }
-         if (key = 81)  { let exit = true; }     // q key
-         if (key = 131) { let direction = 1; }   // up arrow
-         if (key = 133) { let direction = 2; }   // down arrow
-         if (key = 130) { let direction = 3; }   // left arrow
-         if (key = 132) { let direction = 4; }   // right arrow
-         // waits for the key to be released
-         while (~(key = 0)) {
-            let key = Keyboard.keyPressed();
-            let stepOfNextenemy = ((enedir*3)/4);
-            let stepfr = ((enedir*3+1)/4);
-            do moveSquare();
-            do moveEnemy(enedir);
-            do moveSecondEnemy(stepOfNextenemy);
-            do moveFriend(stepfr);
-            do enemy2.draw();
-            do square.draw();
-            do enemy.draw();
-            do friend.draw();
-            if(~alive1 & SquareGame.inrange(square.getx(),square.gety(),square.get_size(),enemy.getx(),enemy.gety(),enemy.get_width(),enemy.get_length())){
-               do enemy.erase();
-               do enemy2.draw();
-               do square.draw();
-               do friend.draw();
-               do enemy.dispose();
-               let score = score-1;
-               if(score<0){
-                  let exit = true;
-               }
-               do Output.moveCursor(0,7);
-               do Output.printInt(score);
-               let alive1 = true;
-            }
-            if(~alive2 & SquareGame.inrange(square.getx(),square.gety(),square.get_size(),enemy2.getx(),enemy2.gety(),enemy2.get_width(),enemy2.get_length())){
-               do enemy2.erase();
-               do enemy.draw();
-               do square.draw();
-               do friend.draw();
-               do enemy2.dispose();
-               let score = score-1;
-               if(score<0){
-                  let exit = true;
-               }
-               do Output.moveCursor(0,7);
-               do Output.printInt(score);
-               let alive2 = true;
-            }
-            if(~alive3 & SquareGame.inrange(square.getx(),square.gety(),square.get_size(),friend.getx(),friend.gety(),friend.get_width(),friend.get_length())){
-               do friend.erase();
-               do friend.dispose();
-               do enemy2.draw();
-               do square.draw();
-               do enemy.draw();
-               let score = score+1;
-               if(score>2){
-                 let final = true;
-               }
-               do Output.moveCursor(0,7);
-               do Output.printInt(score);
-               let alive3 = true;
-            }
-         }
-         if(alive1){
-            let seed = Random.randRange(100);
-            let seed2 = Random.randRange(10);
-            let enemy = Enemy.new(seed*2+seed2,seed*1+seed2+30,4,4);
-            let alive1 = false;
-         }
-         if(alive2){
-            let seed = Random.randRange(100);
-            let seed2 = Random.randRange(10);
-            let enemy2 = Enemy.new(seed*4+seed2,seed*1+seed2+30,8,8);
-            let alive2 = false;
-         }
-         if(alive3){
-           let seed = Random.randRange(100);
-           let seed2 = Random.randRange(10);
-           let friend = Enemy.new(seed*3-seed2+20,seed*1-seed2+30,10,4);
-           let alive3 = false;
-         }
-         if(final){
-            let king = King.new(100,100,40);
-            if(lifeOfking>0){
-               if(SquareGame.inrange(square.getx(),square.gety(),square.get_size(),king.getx(),king.gety(),king.get_size(),king.get_size())){
-                    let lifeOfking = lifeOfking-1;
-                    let score = score-1;
-                    do Output.moveCursor(0,7);
-                    do Output.printInt(score);
-               }
-            }
-            if(lifeOfking=0 & score>0){
-               let exit = true;
-            }
-         }
-     } // while
 
-     return;
+   /** Erases the square from the screen. */
+   method void erase() {
+      do Screen.setColor(false);
+      do Screen.drawRectangle(x, y, x + size, y + size);
+      return;
+   }
+
+    /** Increments the square size by 2 pixels. */
+   method void incSize() {
+      if (((y + size) < 254) & ((x + size) < 510)) {
+         do erase();
+         let size = size + 2;
+         do draw();
+      }
+      return;
+   }
+
+   /** Decrements the square size by 2 pixels. */
+   method void decSize() {
+      if (size > 2) {
+         do erase();
+         let size = size - 2;
+         do draw();
+      }
+      return;
+   }
+
+   /** Moves the square up by 2 pixels. */
+   method void moveUp() {
+      if (y > 30) {
+         do Screen.setColor(false);
+         do Screen.drawRectangle(x, (y + size) - 1, x + size, y + size);
+         let y = y - 2;
+         do Screen.setColor(true);
+         do Screen.drawRectangle(x, y, x + size, y + 1);
+      }
+      return;
+   }
+
+   /** Moves the square down by 2 pixels. */
+   method void moveDown() {
+      if ((y + size) < 254) {
+         do Screen.setColor(false);
+         do Screen.drawRectangle(x, y, x + size, y + 1);
+         let y = y + 2;
+         do Screen.setColor(true);
+         do Screen.drawRectangle(x, (y + size) - 1, x + size, y + size);
+      }
+      return;
+   }
+
+   /** Moves the square left by 2 pixels. */
+   method void moveLeft() {
+      if (x > 1 & y>20) {
+         do Screen.setColor(false);
+         do Screen.drawRectangle((x + size) - 1, y, x + size, y + size);
+         let x = x - 2;
+         do Screen.setColor(true);
+         do Screen.drawRectangle(x, y, x + 1, y + size);
+      }
+      return;
+   }
+
+   /** Moves the square right by 2 pixels. */
+   method void moveRight() {
+      if ((x + size) < 510 & y>20) {
+         do Screen.setColor(false);
+         do Screen.drawRectangle(x, y, x + 1, y + size);
+         let x = x + 2;
+         do Screen.setColor(true);
+         do Screen.drawRectangle((x + size) - 1, y, x + size, y + size);
+      }
+      return;
+   }
+   method int getx(){
+     return x;
+   }
+   method int gety(){
+     return y;
+   }
+   method int get_size(){
+    return size;
    }
 }
