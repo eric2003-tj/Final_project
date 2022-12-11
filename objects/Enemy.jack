@@ -1,3 +1,4 @@
+
 class Enemy{
 
    field int x, y; // screen location of the square's top-left corner
