@@ -23,7 +23,7 @@ class SquareGame {
       do Output.println();
       do Output.printString("5.Be aware of king of square,it is quite dangerous");
       do Output.println();
-      do Sys.wait(5000);
+      do Sys.wait(3000);
       do Screen.clearScreen();
       let square = Square.new(20, 50, 30);
       let enemy = Enemy.new(100,50,20,20);
@@ -73,7 +73,7 @@ class SquareGame {
       if (direction = 2) { do square.moveDown(); }
       if (direction = 3) { do square.moveLeft(); }
       if (direction = 4) { do square.moveRight(); }
-      do Sys.wait(7);  // delays the next movement
+      do Sys.wait(25);  // delays the next movement
       return;
    }
   method void moveEnemy(int direction){
@@ -81,7 +81,7 @@ class SquareGame {
     if (direction = 2) { do enemy.moveDown(); }
     if (direction = 3) { do enemy.moveLeft(); }
     if (direction = 4) { do enemy.moveRight(); }
-    do Sys.wait(5);  // delays the next movement
+    //do Sys.wait(25);  // delays the next movement
     return;
   }
   method void moveSecondEnemy(int direction){
@@ -89,7 +89,7 @@ class SquareGame {
     if (direction = 2) { do enemy2.moveDown(); }
     if (direction = 3) { do enemy2.moveLeft(); }
     if (direction = 4) { do enemy2.moveRight(); }
-    do Sys.wait(5);  // delays the next movement
+    //do Sys.wait(25);  // delays the next movement
     return;
   }
   method void moveFriend(int direction){
@@ -97,7 +97,7 @@ class SquareGame {
     if (direction = 2) { do friend.moveDown(); }
     if (direction = 3) { do friend.moveLeft(); }
     if (direction = 4) { do friend.moveRight(); }
-    do Sys.wait(5);  // delays the next movement
+    //do Sys.wait(25);  // delays the next movement
     return;
   }
    /** Runs the game: handles the user's inputs and moves the square accordingly */
@@ -145,18 +145,29 @@ class SquareGame {
             let key = Keyboard.keyPressed();
             let stepOfNextenemy = ((enedir*3)/4);
             let stepfr = ((enedir*3+1)/4);
+            do square.draw();
             do moveSquare();
+            do enemy.draw();
+            do enemy2.draw();
+            do friend.draw();
+            do Sys.wait(10);
             do moveEnemy(enedir);
+            do square.draw();
+            do enemy2.draw();
+            do friend.draw();
+            do Sys.wait(10);
             do moveSecondEnemy(stepOfNextenemy);
+            do square.draw();
+            do enemy.draw();
+            do friend.draw();
+            do Sys.wait(10);
             do moveFriend(stepfr);
             do enemy2.draw();
             do square.draw();
             do enemy.draw();
-            do friend.draw();
             if(~alive1 & SquareGame.inrange(square.getx(),square.gety(),square.get_size(),enemy.getx(),enemy.gety(),enemy.get_width(),enemy.get_length())){
                do enemy.erase();
                do enemy.dispose();
-               do Sys.wait(5);
                do enemy2.draw();
                do square.draw();
                do friend.draw();
@@ -171,7 +182,6 @@ class SquareGame {
             if(~alive2 & SquareGame.inrange(square.getx(),square.gety(),square.get_size(),enemy2.getx(),enemy2.gety(),enemy2.get_width(),enemy2.get_length())){
                do enemy2.erase();
                do enemy2.dispose();
-               do Sys.wait(5);
                do enemy.draw();
                do square.draw();
                do friend.draw();
@@ -186,7 +196,6 @@ class SquareGame {
             if(~alive3 & SquareGame.inrange(square.getx(),square.gety(),square.get_size(),friend.getx(),friend.gety(),friend.get_width(),friend.get_length())){
                do friend.erase();
                do friend.dispose();
-               do Sys.wait(5);
                do enemy2.draw();
                do square.draw();
                do enemy.draw();
@@ -223,6 +232,7 @@ class SquareGame {
                if(SquareGame.inrange(square.getx(),square.gety(),square.get_size(),king.getx(),king.gety(),king.get_size(),king.get_size())){
                     let lifeOfking = lifeOfking-1;
                     let score = score-1;
+                    do king.draw();
                     do Output.moveCursor(0,7);
                     do Output.printInt(score);
                     do Output.moveCursor(0,10);
