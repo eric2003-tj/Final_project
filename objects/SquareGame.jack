@@ -133,11 +133,13 @@ class SquareGame {
       var int stepOfNextenemy;
       var int stepfr;
       var int lifeOfking;
+      var boolean first;
       let exit = false;
       let alive1 = false;
       let alive2 = false;
       let alive3 = false;
       let final = false;
+      let first = false;
       let lifeOfking = 3;
       do Output.moveCursor(0,0);
       do Output.printString("Score: ");
@@ -219,6 +221,9 @@ class SquareGame {
                do enemy.draw();
                let score = score+1;
                if(score>2){
+                 if(~first & ~final){
+                   let first = true;
+                 }
                  let final = true;
                }
                do Output.moveCursor(0,7);
@@ -246,10 +251,38 @@ class SquareGame {
          }
          if(final){
             let king = King.new(256,125,40);
+            if(first){
+              do Screen.clearScreen();
+              do Output.moveCursor(0,0);
+              do Output.printString("Rect A: Wait! What is it?");
+              do Output.println();
+              do Output.printString("Square A and Square B: Long live the king Mao!");
+              do Output.println();
+              do Output.printString("You: Damn! What do I need to do now?");
+              do Output.println();
+              do Output.printString("Scout: President Chiang asked you to defeat him just now");
+              do Output.println();
+              do Output.printString("You: All right...");
+              do Sys.wait(1500);
+              do Screen.clearScreen();
+              do square.draw();
+              do enemy.draw();
+              do enemy2.draw();
+              do friend.draw();
+              do king.draw();
+              do Output.moveCursor(0,0);
+              do Output.printString("Score: ");
+              do Output.printInt(score);
+              do Output.moveCursor(0,10);
+              do Output.printString("Life of king: ");
+              do Output.printInt(lifeOfking);
+              let first = false;
+            }
+
             if(lifeOfking>0){
                if(SquareGame.inrange(square.getx(),square.gety(),square.get_size(),king.getx(),king.gety(),king.get_size(),king.get_size())){
                     let lifeOfking = lifeOfking-1;
-                    let score = score-1;
+                    let score = score-2;
                     do king.draw();
                     do Output.moveCursor(0,7);
                     do Output.printInt(score);
