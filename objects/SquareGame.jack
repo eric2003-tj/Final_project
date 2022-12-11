@@ -11,6 +11,14 @@ class SquareGame {
    field int score;
    /** Constructs a new Square Game. */
    constructor SquareGame new() {
+      do Output.moveCursor(10,15);
+      do Output.printString("Devil of Square");
+      do Output.println();
+      do Output.moveCursor(11,15);
+      do Output.printString("Let's start!");
+      do Sys.wait(1500);
+      do Screen.clearScreen();
+      do Output.moveCursor(0,0);
       do Output.printString("Here are some rules for the game.");
       do Output.println();
       do Output.printString("1.You are faced with dangerous squares army.As a kind square,you need to contact with rectangles to defense yourself.");
