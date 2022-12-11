@@ -31,7 +31,18 @@ class SquareGame {
       do Output.println();
       do Output.printString("5.Be aware of king of square,it is quite dangerous");
       do Output.println();
-      do Sys.wait(3000);
+      do Sys.wait(1500);
+      do Screen.clearScreen();
+      do Output.moveCursor(0,0);
+      do Output.printString("Square A: Those rectangles are our enemies,and we need to defeat them");
+      do Output.println();
+      do Sys.wait(500);
+      do Output.printString("Square B: Bro, watch out! There is a rectangle trying to contact the square! Damn,We need to kill the betrayer!");
+      do Output.println();
+      do Sys.wait(500);
+      do Output.printString("You: We need to hide from the guard and contact our partners");
+      do Output.println();
+      do Sys.wait(1500);
       do Screen.clearScreen();
       let square = Square.new(20, 50, 30);
       let enemy = Enemy.new(100,50,20,20);
@@ -134,7 +145,6 @@ class SquareGame {
       do Output.moveCursor(0,10);
       do Output.printString("Life of king: ");
       do Output.printInt(lifeOfking);
-      //do Output.printString("You need to attack the heart of the enemy.");
       while (~exit) {
          let enedir = Random.randRange(4);
          // waits for a key to be pressed
@@ -181,7 +191,7 @@ class SquareGame {
                do friend.draw();
                let score = score-1;
                if(score<0){
-                  let exit = true;
+                   let exit = true;
                }
                do Output.moveCursor(0,7);
                do Output.printInt(score);
@@ -252,7 +262,13 @@ class SquareGame {
                do Screen.clearScreen();
                do Output.moveCursor(10,15);
                do Output.printString("You win!");
+               do Output.moveCursor(12,17);
+               do Output.printString("Score:");
+               do Output.printInt(score);
                let exit = true;
+            }
+            if(score < 0){
+              let exit = true;
             }
          }
      } // while
