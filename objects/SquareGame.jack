@@ -21,14 +21,19 @@ class SquareGame {
       do Output.moveCursor(0,0);
       do Output.printString("Here are some rules for the game.");
       do Output.println();
+      do Sys.wait(500);
       do Output.printString("1.You are faced with dangerous squares army.As a kind square,you need to contact with rectangles to defense yourself.");
       do Output.println();
+      do Sys.wait(500);
       do Output.printString("2.You will get a point if you contact rectangles successfully.Or you will lose a point if you contact with square.");
       do Output.println();
+      do Sys.wait(500);
       do Output.printString("3.Sometimes you will be recognized as an enemy square,thus you have possibility to avoid being attacked and obtaining score");
       do Output.println();
+      do Sys.wait(500);
       do Output.printString("4.Sometimes your enemy and friends will be split into fractions");
       do Output.println();
+      do Sys.wait(500);
       do Output.printString("5.Be aware of king of square,it is quite dangerous");
       do Output.println();
       do Sys.wait(1500);
@@ -42,7 +47,7 @@ class SquareGame {
       do Sys.wait(500);
       do Output.printString("You: We need to hide from the guard and contact our partners");
       do Output.println();
-      do Sys.wait(1500);
+      do Sys.wait(3000);
       do Screen.clearScreen();
       let square = Square.new(20, 50, 30);
       let enemy = Enemy.new(100,50,20,20);
@@ -127,6 +132,7 @@ class SquareGame {
       var boolean alive2;
       var boolean alive3;//friend
       var boolean final;
+      var boolean win;
       var int enedir;
       var int seed;
       var int seed2;
@@ -140,6 +146,7 @@ class SquareGame {
       let alive3 = false;
       let final = false;
       let first = false;
+      let win = false;
       let lifeOfking = 3;
       do Output.moveCursor(0,0);
       do Output.printString("Score: ");
@@ -256,14 +263,18 @@ class SquareGame {
               do Output.moveCursor(0,0);
               do Output.printString("Rect A: Wait! What is it?");
               do Output.println();
+              do Sys.wait(500);
               do Output.printString("Square A and Square B: Long live the king Mao!");
               do Output.println();
+              do Sys.wait(500);
               do Output.printString("You: Damn! What do I need to do now?");
               do Output.println();
+              do Sys.wait(500);
               do Output.printString("Scout: President Chiang asked you to defeat him just now");
               do Output.println();
+              do Sys.wait(500);
               do Output.printString("You: All right...");
-              do Sys.wait(1500);
+              do Sys.wait(3000);
               do Screen.clearScreen();
               do square.draw();
               do enemy.draw();
@@ -292,12 +303,7 @@ class SquareGame {
                }
             }
             if(lifeOfking=0 & score>0){
-               do Screen.clearScreen();
-               do Output.moveCursor(10,15);
-               do Output.printString("You win!");
-               do Output.moveCursor(12,17);
-               do Output.printString("Score:");
-               do Output.printInt(score);
+               let win = true;
                let exit = true;
             }
             if(score < 0){
@@ -305,7 +311,54 @@ class SquareGame {
             }
          }
      } // while
-
+     if(win){
+       do Screen.clearScreen();
+       do Output.moveCursor(0,0);
+       do Output.printString("King : Ah! Ah! Ah! Inherit my spirits if I die! Take care of my children and my mother!");
+       do Output.println();
+       do Sys.wait(500);
+       do Output.printString("Square A and Square B: You damn! How dare you to harm our great king!");
+       do Output.println();
+       do Sys.wait(500);
+       do Output.printString("Scout: Emergency! President Chiang is hijacked by General Chang and General Yang!");
+       do Output.println();
+       do Output.printString("You: How dare them!");
+       do Output.println();
+       do Sys.wait(500);
+       do Output.printString("RectA: Retreat! Back to our HQ to discuss how to save president");
+       do Output.println();
+       do Sys.wait(500);
+       do Output.printString("King : We will be back again");
+       do Sys.wait(3000);
+       do Screen.clearScreen();
+       do Output.moveCursor(10,15);
+       do Output.printString("You win! Thanks for playing");
+       do Output.moveCursor(12,17);
+       do Output.printString("Score:");
+       do Output.printInt(score);
+     }
+     if(~win){
+       do Screen.clearScreen();
+       do Output.moveCursor(0,0);
+       do Output.printString("You : Damn! I was shot!");
+       do Output.println();
+       do Sys.wait(500);
+       do Output.printString("Square A and Square B: Go to hell!");
+       do Output.println();
+       do Sys.wait(500);
+       do Output.printString("(Bang!)");
+       do Output.println();
+       do Output.printString("You: Ah! Ah! Ah!");
+       do Output.println();
+       do Sys.wait(3000);
+       do Screen.clearScreen();
+       do Output.moveCursor(10,15);
+       do Output.printString("You lose! Thanks for playing");
+       do Output.moveCursor(12,17);
+       do Output.printString("Score:");
+       do Output.printInt(score);
+     }
      return;
    }
 }
+
