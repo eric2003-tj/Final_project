@@ -1,13 +1,12 @@
 
 class SquareGame {
-   field Square square; // the square of this game
+   field Square square;
    field char enter;
    field Enemy enemy;
    field Enemy enemy2;
    field Enemy friend;
    field King king;
-   field int direction; // the square's current direction:
-                        // 0=none, 1=up, 2=down, 3=left, 4=right
+   field int direction;
    field int score;
    function void drawC(int location) {
 	var int memAddress;
@@ -2871,7 +2870,6 @@ function void draw(int location) {
     if (direction = 2) { do enemy.moveDown(); }
     if (direction = 3) { do enemy.moveLeft(); }
     if (direction = 4) { do enemy.moveRight(); }
-    //do Sys.wait(25);  // delays the next movement
     return;
   }
   method void moveSecondEnemy(int direction){
@@ -2879,7 +2877,6 @@ function void draw(int location) {
     if (direction = 2) { do enemy2.moveDown(); }
     if (direction = 3) { do enemy2.moveLeft(); }
     if (direction = 4) { do enemy2.moveRight(); }
-    //do Sys.wait(25);  // delays the next movement
     return;
   }
   method void moveFriend(int direction){
@@ -2887,7 +2884,6 @@ function void draw(int location) {
     if (direction = 2) { do friend.moveDown(); }
     if (direction = 3) { do friend.moveLeft(); }
     if (direction = 4) { do friend.moveRight(); }
-    //do Sys.wait(25);  // delays the next movement
     return;
   }
    /** Runs the game: handles the user's inputs and moves the square accordingly */
