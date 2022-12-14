@@ -32,27 +32,6 @@ class Square {
       do Screen.drawRectangle(x, y, x + size, y + size);
       return;
    }
-
-    /** Increments the square size by 2 pixels. */
-   method void incSize() {
-      if (((y + size) < 254) & ((x + size) < 510)) {
-         do erase();
-         let size = size + 2;
-         do draw();
-      }
-      return;
-   }
-
-   /** Decrements the square size by 2 pixels. */
-   method void decSize() {
-      if (size > 2) {
-         do erase();
-         let size = size - 2;
-         do draw();
-      }
-      return;
-   }
-
    /** Moves the square up by 2 pixels. */
    method void moveUp() {
       if (y > 30) {
@@ -88,7 +67,6 @@ class Square {
       }
       return;
    }
-
    /** Moves the square right by 2 pixels. */
    method void moveRight() {
       if ((x + size) < 510 & y>20) {
