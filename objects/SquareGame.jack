@@ -2935,7 +2935,6 @@ function void draw(int location) {
             let stepOfNextenemy = ((enedir*3)/4);
             let stepfr = ((enedir*3+1)/4);
             do square.draw();
-            do moveSquare();
             do enemy.draw();
             do enemy2.draw();
             do friend.draw();
@@ -2954,9 +2953,9 @@ function void draw(int location) {
             do enemy2.draw();
             do square.draw();
             do enemy.draw();
+            do moveSquare();
             if(~alive1 & SquareGame.inrange(square.getx(),square.gety(),square.get_size(),enemy.getx(),enemy.gety(),enemy.get_width(),enemy.get_length())){
                do enemy.erase();
-               do enemy.dispose();
                do enemy2.draw();
                do square.draw();
                do friend.draw();
@@ -2970,7 +2969,6 @@ function void draw(int location) {
             }
             if(~alive2 & SquareGame.inrange(square.getx(),square.gety(),square.get_size(),enemy2.getx(),enemy2.gety(),enemy2.get_width(),enemy2.get_length())){
                do enemy2.erase();
-               do enemy2.dispose();
                do enemy.draw();
                do square.draw();
                do friend.draw();
@@ -2984,7 +2982,6 @@ function void draw(int location) {
             }
             if(~alive3 & SquareGame.inrange(square.getx(),square.gety(),square.get_size(),friend.getx(),friend.gety(),friend.get_width(),friend.get_length())){
                do friend.erase();
-               do friend.dispose();
                do enemy2.draw();
                do square.draw();
                do enemy.draw();
@@ -3003,18 +3000,24 @@ function void draw(int location) {
          if(alive1){
             let seed = Random.randRange(100);
             let seed2 = Random.randRange(10);
+            do enemy.erase();
+            do enemy.dispose();
             let enemy = Enemy.new(seed*2+seed2,seed*1+seed2+30,4,4);
             let alive1 = false;
          }
          if(alive2){
             let seed = Random.randRange(100);
             let seed2 = Random.randRange(10);
+            do enemy2.erase();
+            do enemy2.dispose();
             let enemy2 = Enemy.new(seed*4+seed2,seed*1+seed2+30,8,8);
             let alive2 = false;
          }
          if(alive3){
            let seed = Random.randRange(100);
            let seed2 = Random.randRange(10);
+           do friend.erase();
+           do friend.dispose();
            let friend = Enemy.new(seed*3+100,seed*1-seed2+90,10,4);
            let alive3 = false;
          }
