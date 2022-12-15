@@ -2916,6 +2916,7 @@ function void draw(int location) {
       do Output.moveCursor(0,10);
       do Output.printString("Life of king: ");
       do Output.printInt(lifeOfking);
+      do Screen.drawLine(0,30,511,30);
       while (~exit) {
          let enedir = Random.randRange(4);
          // waits for a key to be pressed
@@ -3056,6 +3057,7 @@ function void draw(int location) {
               do Output.moveCursor(0,10);
               do Output.printString("Life of king: ");
               do Output.printInt(lifeOfking);
+              do Screen.drawLine(0,30,511,30);
               let first = false;
             }
 
