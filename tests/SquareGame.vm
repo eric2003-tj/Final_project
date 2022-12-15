@@ -19775,9 +19775,6 @@ pop local 11
 push this 0
 call Square.draw 1
 pop temp 0
-push pointer 0
-call SquareGame.moveSquare 1
-pop temp 0
 push this 2
 call Enemy.draw 1
 pop temp 0
@@ -19835,6 +19832,9 @@ pop temp 0
 push this 2
 call Enemy.draw 1
 pop temp 0
+push pointer 0
+call SquareGame.moveSquare 1
+pop temp 0
 push local 2
 not
 push this 0
@@ -19858,9 +19858,6 @@ goto IF_FALSE5
 label IF_TRUE5
 push this 2
 call Enemy.erase 1
-pop temp 0
-push this 2
-call Enemy.dispose 1
 pop temp 0
 push this 3
 call Enemy.draw 1
@@ -19920,9 +19917,6 @@ label IF_TRUE7
 push this 3
 call Enemy.erase 1
 pop temp 0
-push this 3
-call Enemy.dispose 1
-pop temp 0
 push this 2
 call Enemy.draw 1
 pop temp 0
@@ -19980,9 +19974,6 @@ goto IF_FALSE9
 label IF_TRUE9
 push this 4
 call Enemy.erase 1
-pop temp 0
-push this 4
-call Enemy.dispose 1
 pop temp 0
 push this 3
 call Enemy.draw 1
@@ -20042,6 +20033,12 @@ pop local 8
 push constant 10
 call Random.randRange 1
 pop local 9
+push this 2
+call Enemy.erase 1
+pop temp 0
+push this 2
+call Enemy.dispose 1
+pop temp 0
 push local 8
 push constant 2
 call Math.multiply 2
@@ -20071,6 +20068,12 @@ pop local 8
 push constant 10
 call Random.randRange 1
 pop local 9
+push this 3
+call Enemy.erase 1
+pop temp 0
+push this 3
+call Enemy.dispose 1
+pop temp 0
 push local 8
 push constant 4
 call Math.multiply 2
@@ -20100,6 +20103,12 @@ pop local 8
 push constant 10
 call Random.randRange 1
 pop local 9
+push this 4
+call Enemy.erase 1
+pop temp 0
+push this 4
+call Enemy.dispose 1
+pop temp 0
 push local 8
 push constant 3
 call Math.multiply 2
