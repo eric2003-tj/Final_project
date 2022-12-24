@@ -2916,7 +2916,7 @@ function void draw(int location) {
       do Output.moveCursor(0,10);
       do Output.printString("Life of king: ");
       do Output.printInt(lifeOfking);
-      do Screen.drawLine(0,30,511,30);
+      do Screen.drawLine(0,15,511,15);
       while (~exit) {
          let enedir = Random.randRange(4);
          // waits for a key to be pressed
@@ -3003,7 +3003,7 @@ function void draw(int location) {
             let seed2 = Random.randRange(10);
             do enemy.erase();
             do enemy.dispose();
-            let enemy = Enemy.new(seed*2+seed2,seed*1+seed2+30,4,4);
+            let enemy = Enemy.new(seed*2+seed2,seed*1+seed2+30,20,20);
             let alive1 = false;
          }
          if(alive2){
@@ -3057,7 +3057,7 @@ function void draw(int location) {
               do Output.moveCursor(0,10);
               do Output.printString("Life of king: ");
               do Output.printInt(lifeOfking);
-              do Screen.drawLine(0,30,511,30);
+              do Screen.drawLine(0,15,511,15);
               let first = false;
             }
 
