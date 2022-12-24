@@ -19513,9 +19513,9 @@ push local 12
 call Output.printInt 1
 pop temp 0
 push constant 0
-push constant 30
+push constant 15
 push constant 511
-push constant 30
+push constant 15
 call Screen.drawLine 4
 pop temp 0
 label WHILE_EXP0
@@ -19890,8 +19890,8 @@ push local 9
 add
 push constant 30
 add
-push constant 4
-push constant 4
+push constant 20
+push constant 20
 call Enemy.new 4
 pop this 2
 push constant 0
@@ -20685,9 +20685,9 @@ push local 12
 call Output.printInt 1
 pop temp 0
 push constant 0
-push constant 30
+push constant 15
 push constant 511
-push constant 30
+push constant 15
 call Screen.drawLine 4
 pop temp 0
 push constant 0
