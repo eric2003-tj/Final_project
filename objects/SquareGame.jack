@@ -2746,10 +2746,10 @@ function void draw(int location) {
       do SquareGame.drawD(3377);
       do SquareGame.drawE(3415);
       do SquareGame.drawmark(3550);
-      do SquareGame.drawTank(5700);
       do SquareGame.drawTank(5800);
       do SquareGame.drawTank(5900);
-      do SquareGame.drawHuman(6000);
+      //do SquareGame.drawTank(5900);
+      do SquareGame.drawHuman(6200);
       do Sys.wait(1500);
       do Screen.clearScreen();
       do Output.moveCursor(0,0);
@@ -2788,11 +2788,11 @@ function void draw(int location) {
       do Output.println();
       do Output.println();
       do Sys.wait(500);
-      do Output.printString("3.Sometimes you will be recognized as an enemy ,thus you have possibility to avoid being attacked and obtaining score");
+      do Output.printString("3.You will lose when you have negative score.");
       do Output.println();
       do Output.println();
       do Sys.wait(500);
-      do Output.printString("4.Sometimes your enemy and support will be split into fractions");
+      do Output.printString("4.There will be a surprise when you get three scores.");
       do Output.println();
       do Output.println();
       do Sys.wait(500);
@@ -3039,7 +3039,7 @@ function void draw(int location) {
               do Output.println();
               do Output.println();
               do Sys.wait(500);
-              do Output.printString("Scout: President Chiang asked you to defeat him just now");
+              do Output.printString("Scout: President Chiang asked you to defeat him just now. You need to be careful,if you contact him,you will lose two points.");
               do Output.println();
               do Output.println();
               do Sys.wait(500);
