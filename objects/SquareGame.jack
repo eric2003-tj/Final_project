@@ -3119,8 +3119,9 @@ function void draw(int location) {
        do Output.moveCursor(0,0);
        do Output.printString("You : Damn! I was shot!");
        do Output.println();
+       do Output.println();
        do Sys.wait(500);
-       do Output.printString("Square A and Square B: Go to hell!");
+       do Output.printString("CCP soldier A and CCP soldier B: Go to hell!");
        do Output.println();
        do Output.println();
        do Sys.wait(500);
